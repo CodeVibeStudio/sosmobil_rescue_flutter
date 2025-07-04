@@ -1,0 +1,50 @@
+name: sosmobil_rescue_flutter
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  signature: ^6.3.0
+
+  # Pacotes principais da aplicação
+  supabase_flutter: ^2.9.1
+  provider: ^6.1.5
+  url_launcher: ^6.3.1
+  http: ^1.2.1
+
+  # Pacotes para funcionalidades específicas
+  image_picker: ^1.1.2
+  pdf: ^3.10.8
+  printing: ^5.12.0
+
+  # Pacote de internacionalização (versão corrigida para ser compatível com flutter_localizations)
+  intl: ^0.20.2 # CORREÇÃO FINAL: Atualizado para a versão exata que o SDK exige
+
+  # Ícones
+  cupertino_icons: ^1.0.8
+  xml: ^6.5.0
+  flutter_svg: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+  # Dependências de desenvolvimento para o Isar (se voltar a usar)
+  # build_runner: ^2.4.10
+  # isar_generator: ^3.1.0+1
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/car_diagram.png
+    - assets/car_diagram.svg

@@ -1,0 +1,10 @@
+{
+  "@@locale": "pt",
+  "activeCalls": "Chamados Ativos",
+  "noActiveCalls": "Nenhum chamado ativo encontrado.",
+  "contactBase": "Contato com a Base",
+  "logout": "Sair",
+  "callBase": "Ligar para a Base",
+  "sendWhatsApp": "Enviar WhatsApp",
+  "sendEmail": "Enviar E-mail"
+}

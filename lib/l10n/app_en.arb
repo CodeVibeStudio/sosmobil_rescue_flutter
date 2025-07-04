@@ -1,0 +1,10 @@
+{
+  "@@locale": "en",
+  "activeCalls": "Active Calls",
+  "noActiveCalls": "No active calls found.",
+  "contactBase": "Contact Base",
+  "logout": "Logout",
+  "callBase": "Call Base",
+  "sendWhatsApp": "Send WhatsApp",
+  "sendEmail": "Send Email"
+}

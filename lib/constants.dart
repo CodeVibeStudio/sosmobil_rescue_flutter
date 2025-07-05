@@ -1,6 +1,8 @@
 // lib/constants.dart
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// ATENÇÃO: Substitua pelas suas chaves reais do projeto Supabase.
-const String SUPABASE_URL = 'https://xdltsfiwiffmaqoxozam.supabase.co';
-const String SUPABASE_ANON_KEY =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbHRzZml3aWZmbWFxb3hvemFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExOTM5MTQsImV4cCI6MjA2Njc2OTkxNH0.uTwN0sb5i6Bqujmg4wt8KhgVtEeoWjs5B47WgkErDlw'; // Cole sua chave "anon (public)" aqui
+// Busca a URL do Supabase do arquivo .env
+final String supabaseUrl = dotenv.env['SUPABASE_URL']!;
+
+// Busca a chave Anon do Supabase do arquivo .env
+final String supabaseAnnonKey = dotenv.env['SUPABASE_ANON_KEY']!;

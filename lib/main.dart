@@ -1,7 +1,11 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // Importa o pacote de localização
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+// --- ALTERAÇÃO 1: Importar o pacote dotenv ---
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'constants.dart';
@@ -12,10 +16,16 @@ Future<void> main() async {
   // Garante que os Widgets do Flutter sejam inicializados
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inicializa o Supabase
+  // --- ALTERAÇÃO 2: Carregar as variáveis de ambiente do arquivo .env ---
+  // Esta linha DEVE vir antes da inicialização do Supabase.
+  await dotenv.load(fileName: ".env");
+
+  // Inicializa o Supabase usando as chaves carregadas pelo dotenv
+  // (através do arquivo constants.dart)
   await Supabase.initialize(
-    url: SUPABASE_URL,
-    anonKey: SUPABASE_ANON_KEY,
+    url: supabaseUrl, // Modificado de SUPABASE_URL para supabaseUrl
+    anonKey:
+        supabaseAnnonKey, // Modificado de SUPABASE_ANON_KEY para supabaseAnnonKey
   );
   runApp(const MyApp());
 }
@@ -45,9 +55,9 @@ class MyApp extends StatelessWidget {
       ],
       // --- FIM DA CONFIGURAÇÃO ---
       theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.blue,
-        scaffoldBackgroundColor: const Color(0xFF1F1F1F),
-        cardColor: const Color(0xFF2C2C2C),
+        primaryColor: const Color(0xFF3B82F6), // Azul de destaque
+        scaffoldBackgroundColor: const Color(0xFF18181B), // Cinza mais escuro
+        cardColor: const Color(0xFF27272A), // Cinza para os cards
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -55,16 +65,19 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF3B82F6), // Azul de destaque
+            foregroundColor: Colors.white, // Texto branco
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.symmetric(vertical: 16),
           ),
         ),
-        colorScheme: ColorScheme.dark(
-          primary: Colors.blue.shade300,
-          secondary: Colors.teal.shade300,
-          error: Colors.red.shade400,
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF3B82F6), // Azul
+          secondary: Colors.orange, // Laranja como cor secundária
+          error: Colors.redAccent,
+          surface: Color(0xFF27272A), // Superfície dos componentes
         ),
       ),
       // Define a rota inicial baseada no estado de login

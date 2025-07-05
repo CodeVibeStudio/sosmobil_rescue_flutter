@@ -295,7 +295,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ... (Todas as seções de detalhes do chamado sem alterações)
+                    Card(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Resumo do Chamado',
+                                style: Theme.of(context).textTheme.titleLarge),
+                            const Divider(height: 20),
+                            _buildDetailRow('Status:', _chamadoData!['status']),
+                            _buildDetailRow('Nº Assistência:',
+                                _chamadoData!['numero_assistencia']),
+                            _buildDetailRow(
+                                'Motivo:', _chamadoData!['motivo_acionamento']),
+                          ],
+                        ),
+                      ),
+                    ),
                     _buildSectionTitle('Resumo do Chamado'),
                     _buildDetailRow('Status:', _chamadoData!['status']),
                     _buildDetailRow(
@@ -384,7 +402,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               label: const Text('Salvar Alterações'),
                             ),
                     ),
-
                     _buildSectionTitle('Checklist de Vistoria'),
                     const SizedBox(height: 8),
                     Center(

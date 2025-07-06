@@ -6,6 +6,8 @@ import 'details_screen.dart';
 import 'contact_screen.dart';
 import 'package:sosmobil_rescue_flutter/l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart'; // Importa o shimmer
+import 'package:provider/provider.dart';
+import 'package:sosmobil_rescue_flutter/helpers/theme_notifier.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,12 +45,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // Acessa as traduções para o idioma atual
     final l10n = AppLocalizations.of(context)!;
+    final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.activeCalls), // Usa a tradução
         // A seção 'actions' com os botões de contato e logout continua a mesma.
         actions: [
+          // --- BOTÃO DE TEMA ADICIONADO AQUI ---
+          IconButton(
+            icon: Icon(
+              // Muda o ícone de acordo com o tema atual
+              Provider.of<ThemeNotifier>(context).themeMode == ThemeMode.dark
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
+            onPressed: () {
+              // Chama a função para trocar o tema
+              themeNotifier.toggleTheme();
+            },
+            tooltip: 'Alterar Tema',
+          ),
+          // --- FIM DO BOTÃO DE TEMA ---
+
           IconButton(
             icon: const Icon(Icons.support_agent),
             onPressed: () {

@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:printing/printing.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../helpers/pdf_generator.dart';
-import 'vehicle_checklist_screen.dart';
+import 'package:sosmobil_rescue_flutter/screens/damage_marking_screen.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String chamadoId;
@@ -263,26 +263,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       appBar: AppBar(
         // ... (código do AppBar sem alterações)
         title: Text(_chamadoData?['tipo_servico'] ?? 'Carregando...'),
-        actions: [
-          if (_chamadoData != null)
-            _isGeneratingPdf
-                ? const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
-                : IconButton(
-                    icon: const Icon(Icons.picture_as_pdf),
-                    onPressed: _createAndShowPdf,
-                    tooltip: 'Gerar Relatório PDF',
-                  ),
-        ],
+        actions: [],
       ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -425,7 +406,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           Navigator.of(context)
                               .push(
                                 MaterialPageRoute(
-                                  builder: (context) => VehicleChecklistScreen(
+                                  builder: (context) => DamageMarkingScreen(
                                     chamadoId: widget.chamadoId,
                                     initialData: _chamadoData!,
                                   ),

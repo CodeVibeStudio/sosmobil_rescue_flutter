@@ -1,15 +1,12 @@
-// lib/screens/vehicle_checklist_screen.dart
 import 'dart:convert';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:signature/signature.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Enum para os tipos de avaria
+// Enums para os tipos de avaria e estado dos acessórios
 enum DamageType { none, batido, riscado }
 
-// Enum para o estado dos acessórios
 enum AccessoryState { S, N, I }
 
 class VehicleChecklistScreen extends StatefulWidget {
@@ -27,53 +24,56 @@ class VehicleChecklistScreen extends StatefulWidget {
 }
 
 class _VehicleChecklistScreenState extends State<VehicleChecklistScreen> {
-  // Mapa de hotspots final com todas as coordenadas.
+  // Mapa com as coordenadas RELATIVAS (percentuais) - VOCÊ PRECISA ATUALIZAR ESTES VALORES
   final Map<String, Offset> _damageHotspots = {
-    // Vista de Cima
-    'capo_superior': const Offset(192.80, 322.60),
-    'para-brisa_superior': const Offset(28.00, 267.40),
-    'teto_superior': const Offset(201.60, 177.80),
-    'vidro_traseiro_superior': const Offset(25.60, 93.80),
-    'porta-malas_superior': const Offset(184.8, 65),
+    // Exemplo de como devem ser os novos valores (entre 0.0 e 1.0)
+    // Use a tela de depuração para coletar os valores corretos para a sua imagem.
+// Vista de Cima
+    'capo_superior': const Offset(0.1892, 0.8074),
+    'para-brisa_superior': const Offset(0.0270, 0.6770),
+    'teto_superior': const Offset(0.1977, 0.4530),
+    'vidro_traseiro_superior': const Offset(0.0239, 0.2446),
+    'porta-malas_superior': const Offset(0.1846, 0.1687),
 
     // Vista Frontal
-    'para-choque_frontal_esq': const Offset(510.4, 380.2),
-    'farol_frontal_esq': const Offset(513.6, 302.6),
-    'para-choque_frontal_dir': const Offset(253.6, 374.6),
-    'farol_frontal_dir': const Offset(250.4, 299.4),
-    'farol_auxiliar_dir': const Offset(332.8, 383.4),
-    'farol_auxiliar_esq': const Offset(422.4, 379.4),
+    'retrovisor_dir': const Offset(0.2463, 0.6030),
+    'farol_frontal_dir': const Offset(0.2494, 0.7549),
+    'para-choque_frontal_dir': const Offset(0.2525, 0.9457),
+    'farol_auxiliar_dir': const Offset(0.3313, 0.9632),
+    'farol_auxiliar_esq': const Offset(0.4201, 0.9574),
+    'para-choque_frontal_esq': const Offset(0.5089, 0.9574),
+    'farol_frontal_esq': const Offset(0.5120, 0.7627),
+    'retrovisor_esq': const Offset(0.5189, 0.5991),
 
     // Vista Traseira
-    'para-choque_traseiro_esq': const Offset(260.8, 190.6),
-    'lanterna_traseira_esq': const Offset(261.6, 117.8),
-    'para-choque_traseiro_dir': const Offset(508.8, 197.8),
-    'lanterna_traseira_dir': const Offset(508, 119.4),
-    'tampa_porta_malas': const Offset(490.4, 56.2),
+    'lanterna_traseira_esq': const Offset(0.2602, 0.2972),
+    'para-choque_traseiro_esq': const Offset(0.2595, 0.4764),
+    'para-choque_traseiro_dir': const Offset(0.5066, 0.4920),
+    'lanterna_traseira_dir': const Offset(0.5050, 0.2972),
+    'tampa_porta_malas': const Offset(0.4880, 0.1434),
 
     // Vista Lateral Esquerda
-    'para-lama_dianteiro_esq': const Offset(611.2, 249),
-    'porta_dianteira_esq': const Offset(720.8, 365.8),
-    'porta_traseira_esq': const Offset(795.2, 367.4),
-    'para-lama_traseiro_esq': const Offset(978.4, 249),
-    'vidro_dianteiro_esq': const Offset(768, 205.8),
-    'vidro_traseiro_esq': const Offset(852.8, 206.6),
-    'roda_dianteira_esq': const Offset(596.8, 375.4),
-    'roda_traseira_esq': const Offset(948.8, 373),
-    'retrovisor_esq': const Offset(521.6, 239.4),
+    'roda_dianteira_esq': const Offset(0.5938, 0.9418),
+    'porta_dianteira_esq': const Offset(0.7174, 0.9204),
+    'porta_traseira_esq': const Offset(0.7923, 0.9243),
+    'roda_traseira_esq': const Offset(0.9459, 0.9399),
+    'para-lama_traseiro_esq': const Offset(0.9745, 0.6283),
+    'para-lama_dianteiro_esq': const Offset(0.6085, 0.6302),
+    'vidro_dianteiro_esq': const Offset(0.7645, 0.5192),
+    'vidro_traseiro_esq': const Offset(0.8494, 0.5212),
 
     // Vista Lateral Direita
-    'para-lama_dianteiro_dir': const Offset(948.8, 75.4),
-    'porta_dianteira_dir': const Offset(799.2, 184.2),
-    'porta_traseira_dir': const Offset(612, 207.4),
-    'para-lama_traseiro_dir': const Offset(603.2, 58.6),
-    'vidro_dianteiro_dir': const Offset(818.4, 33),
-    'vidro_traseiro_dir': const Offset(744, 34.6),
-    'roda_dianteira_dir': const Offset(965.6, 203.4),
-    'roda_traseira_dir': const Offset(612, 207.4),
-    'retrovisor_dir': const Offset(247.2, 241),
+    'roda_traseira_dir': const Offset(0.6093, 0.5153),
+    'porta_traseira_dir': const Offset(0.7220, 0.4550),
+    'porta_dianteira_dir': const Offset(0.7961, 0.4589),
+    'roda_dianteira_dir': const Offset(0.9606, 0.5075),
+    'para-lama_traseiro_dir': const Offset(0.6023, 0.1434),
+    'vidro_traseiro_dir': const Offset(0.7413, 0.0850),
+    'vidro_dianteiro_dir': const Offset(0.8147, 0.0869),
+    'para-lama_dianteiro_dir': const Offset(0.9452, 0.1921),
   };
 
+  // Variáveis de estado
   Map<String, DamageType> damagePoints = {};
   Map<String, AccessoryState> accessories = {};
   String? fuelLevel;
@@ -85,6 +85,7 @@ class _VehicleChecklistScreenState extends State<VehicleChecklistScreen> {
   final SignatureController _recipientSignatureController =
       SignatureController(penStrokeWidth: 2, penColor: Colors.white);
   bool _isLoading = false;
+
   final List<String> _accessoryList = [
     'Retrovisor Elétrico',
     'Faróis Auxiliares',
@@ -107,15 +108,51 @@ class _VehicleChecklistScreenState extends State<VehicleChecklistScreen> {
   void initState() {
     super.initState();
     _loadInitialData();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _requesterNameController.dispose();
     _recipientNameController.dispose();
     _requesterSignatureController.dispose();
     _recipientSignatureController.dispose();
     super.dispose();
+  }
+
+  void _loadInitialData() {
+    final damageData = widget.initialData['vehicle_damage_points'];
+    if (damageData is Map) {
+      damagePoints = damageData.map((key, value) => MapEntry(
+          key,
+          DamageType.values.firstWhere((e) => e.name == value,
+              orElse: () => DamageType.none)));
+    }
+    final accessoriesData = widget.initialData['accessories_checklist'];
+    if (accessoriesData is Map) {
+      accessories = accessoriesData.map((key, value) => MapEntry(
+          key,
+          AccessoryState.values.firstWhere((e) => e.name == value,
+              orElse: () => AccessoryState.N)));
+    } else {
+      for (var item in _accessoryList) {
+        accessories[item] = AccessoryState.N;
+      }
+    }
+    fuelLevel = widget.initialData['fuel_level'];
+    tiresState = widget.initialData['tires_state'];
+    final signatureData = widget.initialData['signatures'];
+    if (signatureData is Map) {
+      _requesterNameController.text = signatureData['requester_name'] ?? '';
+      _recipientNameController.text = signatureData['recipient_name'] ?? '';
+    }
   }
 
   @override
@@ -145,35 +182,46 @@ class _VehicleChecklistScreenState extends State<VehicleChecklistScreen> {
             Center(
               child: InteractiveViewer(
                 maxScale: 2.5,
-                child: AspectRatio(
-                  aspectRatio: 1500 / 595,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      // Camada 0: Imagem de fundo
-                      Image.asset('assets/car_diagram.png', fit: BoxFit.fill),
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final containerWidth = constraints.maxWidth;
+                  // Calcula a altura mantendo a proporção da imagem original (1500x595)
+                  final containerHeight = containerWidth * (595 / 1500);
 
-                      // Camada 1: Hotspots que já foram configurados
-                      ..._damageHotspots.entries.map((entry) {
-                        final position = entry.value;
-                        return Positioned(
-                          left: position.dx - 15,
-                          top: position.dy - 15,
-                          child: GestureDetector(
-                            onTap: () => _onDamagePointTapped(entry.key),
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              color: Colors.transparent,
-                              child: _buildDamageIcon(
-                                  damagePoints[entry.key] ?? DamageType.none),
+                  return SizedBox(
+                    width: containerWidth,
+                    height: containerHeight,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.asset('assets/car_diagram.png', fit: BoxFit.fill),
+                        ..._damageHotspots.entries.map((entry) {
+                          final relativeOffset = entry.value;
+                          // Converte a coordenada relativa para uma posição absoluta (em pixels)
+                          final absolutePosition = Offset(
+                            relativeOffset.dx * containerWidth,
+                            relativeOffset.dy * containerHeight,
+                          );
+
+                          return Positioned(
+                            left: absolutePosition.dx -
+                                20, // Centraliza a área de toque (40x40)
+                            top: absolutePosition.dy - 20,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => _onDamagePointTapped(entry.key),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                child: _buildDamageIcon(
+                                    damagePoints[entry.key] ?? DamageType.none),
+                              ),
                             ),
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
+                          );
+                        }),
+                      ],
+                    ),
+                  );
+                }),
               ),
             ),
             const SizedBox(height: 24),
@@ -196,34 +244,6 @@ class _VehicleChecklistScreenState extends State<VehicleChecklistScreen> {
         ),
       ),
     );
-  }
-
-  void _loadInitialData() {
-    final damageData = widget.initialData['vehicle_damage_points'];
-    if (damageData is Map) {
-      damagePoints = damageData.map((key, value) => MapEntry(
-          key,
-          DamageType.values.firstWhere((e) => e.name == value,
-              orElse: () => DamageType.none)));
-    }
-    final accessoriesData = widget.initialData['accessories_checklist'];
-    if (accessoriesData is Map) {
-      accessories = accessoriesData.map((key, value) => MapEntry(
-          key,
-          AccessoryState.values.firstWhere((e) => e.name == value,
-              orElse: () => AccessoryState.N)));
-    } else {
-      for (var item in _accessoryList) {
-        accessories[item] = AccessoryState.N;
-      }
-    }
-    fuelLevel = widget.initialData['fuel_level'];
-    tiresState = widget.initialData['tires_state'];
-    final signatureData = widget.initialData['signatures'];
-    if (signatureData is Map) {
-      _requesterNameController.text = signatureData['requester_name'] ?? '';
-      _recipientNameController.text = signatureData['recipient_name'] ?? '';
-    }
   }
 
   Future<void> _saveChecklist() async {

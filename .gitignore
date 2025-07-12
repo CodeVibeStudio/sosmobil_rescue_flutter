@@ -47,3 +47,5 @@ app.*.map.json
 # Secrets file - ADDED
 # Ignorar o arquivo .env que contém as chaves de API.
 .env
+
+/android/key.properties

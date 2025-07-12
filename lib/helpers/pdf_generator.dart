@@ -209,7 +209,7 @@ class PdfGenerator {
         ),
         pw.SizedBox(height: 10),
         pw.Text(
-          "OBSERVAÇÃO: A AUTO SOCORRO LARANJAL, NÃO SE RESPONSABILIZA POR OBJETOS DEIXADOS DENTRO DO VEÍCULO.",
+          "OBSERVAÇÃO: A AUTO SOCORRO, NÃO SE RESPONSABILIZA POR OBJETOS DEIXADOS DENTRO DO VEÍCULO.",
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
         ),
         pw.SizedBox(height: 30),

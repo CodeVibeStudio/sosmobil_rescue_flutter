@@ -1,4 +1,4 @@
-package com.example.sosmobil_rescue_flutter
+package br.com.codevibestudio.rescuenow
 
 import io.flutter.embedding.android.FlutterActivity
 

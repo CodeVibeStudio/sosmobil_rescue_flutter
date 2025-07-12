@@ -15,6 +15,9 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   appBarTheme: const AppBarTheme(
     backgroundColor: darkSurfaceColor,
     elevation: 1,
+    iconTheme: IconThemeData(color: Colors.white),
+    titleTextStyle: TextStyle(
+        color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
@@ -32,11 +35,19 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
     ),
   ),
+  textTheme: const TextTheme(
+    bodyLarge: TextStyle(color: Colors.white),
+    bodyMedium: TextStyle(color: Colors.white70),
+    titleLarge: TextStyle(color: Colors.white),
+    titleMedium: TextStyle(color: Colors.white),
+    headlineSmall: TextStyle(color: Colors.white),
+  ),
   colorScheme: const ColorScheme.dark(
     primary: primaryColor,
     secondary: primaryColor,
     surface: darkSurfaceColor,
     background: darkBgColor,
+    onSurface: Colors.white,
   ),
 );
 
@@ -46,11 +57,11 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   cardColor: lightSurfaceColor,
   primaryColor: primaryColor,
   appBarTheme: const AppBarTheme(
-    backgroundColor: lightSurfaceColor,
-    elevation: 1,
-    iconTheme: IconThemeData(color: Colors.black87),
-    titleTextStyle: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w500)
-  ),
+      backgroundColor: lightSurfaceColor,
+      elevation: 1,
+      iconTheme: IconThemeData(color: Colors.black87),
+      titleTextStyle: TextStyle(
+          color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w500)),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: Colors.white,

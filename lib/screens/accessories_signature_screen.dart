@@ -384,7 +384,7 @@ class _AccessoriesAndSignatureScreenState
           Divider(color: Colors.red),
           SizedBox(height: 8),
           Text(
-            "OBSERVAÇÃO: A AUTO SOCORRO LARANJAL, NÃO SE RESPONSABILIZA POR OBJETOS DEIXADOS DENTRO DO VEÍCULO.",
+            "OBSERVAÇÃO: A AUTO SOCORRO, NÃO SE RESPONSABILIZA POR OBJETOS DEIXADOS DENTRO DO VEÍCULO.",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],

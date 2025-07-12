@@ -76,6 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               // Logo (se houver)
               const SizedBox(height: 40),
+
+              // --- ÍCONE ADICIONADO AQUI ---
+              Image.asset(
+                'assets/icon/icon.png', // O caminho relativo dentro do projeto
+                height: 150, // Você pode ajustar a altura conforme necessário
+              ),
+              const SizedBox(height: 16), // Espaço entre o logo e o texto
+              // --- FIM DA ADIÇÃO ---
+
               Text(
                 'Bem-vindo ao RescueNow',
                 textAlign: TextAlign.center,

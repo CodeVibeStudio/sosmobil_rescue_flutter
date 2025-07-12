@@ -1,0 +1,20 @@
+name: Supabase Keep-Alive
+
+on:
+  # Gatilho para rodar em um cronograma (a cada 5 dias)
+  schedule:
+    - cron: '0 1 */5 * *'
+  
+  # Gatilho que permite a execução manual pela interface do GitHub
+  workflow_dispatch: {}
+
+jobs:
+  ping_supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Project
+        run: |
+          curl -X GET \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/health_check?select=*" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
